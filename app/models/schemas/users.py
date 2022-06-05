@@ -1,13 +1,21 @@
 from pydantic import BaseModel, EmailStr
+from typing import Optional
+from app.resources.userTypes import UserTypes
 
-from app.models.domain.users import User
-from app.models.schemas.rwschema import RWSchema
 
-
-class UserInLogin(RWSchema):
+class UserInLogin(BaseModel):
     email: EmailStr
     password: str
 
 
 class UserInCreate(UserInLogin):
     username: str
+
+
+class User(BaseModel):
+    username: str
+    usertype: Optional[UserTypes] = UserTypes.Client
+    email: EmailStr
+
+class UserWithToken(BaseModel):
+    token: str
