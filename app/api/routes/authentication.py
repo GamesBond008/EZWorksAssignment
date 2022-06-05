@@ -8,7 +8,7 @@ from app.db.queries.users import verify_user, create_user
 from app.models.schemas.users import UserWithToken, UserInLogin, User, UserInCreate
 from app.services.jwt import create_access_token_for_user
 
-oauth2Scheme = OAuth2PasswordBearer(tokenUrl="login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 router = APIRouter()
 
 @router.post('/login', response_model = Union[UserWithToken,ErrorResponse])
@@ -46,7 +46,7 @@ async def signup(user: UserInCreate, response: Response):
 	return ResponseSuccess(message = 'The user has been created Successfully.')
 
 @router.get('/somethingCheck')
-async def ssss(token:str = Depends(oauth2Scheme)):
+async def ssss(token:str = Depends(oauth2_scheme)):
 	print(token)
 	return UserWithToken(
 		token = 'sfsd'

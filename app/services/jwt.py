@@ -4,6 +4,7 @@ from typing import Dict
 import jwt, os
 from pydantic import ValidationError
 from passlib.context import CryptContext
+from app.services.errors import CredentialError
 
 from app.models.schemas.users import User
 
@@ -27,6 +28,7 @@ def create_jwt_token(jwt_content: Dict[str, str], expires_delta: timedelta) -> s
 	to_encode.update({
 		'exp': expire, 'sub' : JWT_SUBJECT
 	})
+	print(to_encode)
 	return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
@@ -37,13 +39,13 @@ def create_access_token_for_user(user: User) -> str:
 	)
 
 
-def get_user_from_token(token: str) -> str:
+def get_user_from_token(token: str) -> User:
 	
 	try:
 		return User(**jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]))
 
 	except jwt.PyJWTError as decode_error:
-		raise ValueError("unable to decode JWT token")
+		raise CredentialError("Unable to decode JWT token")
 	
 	except ValidationError as validation_error:
-		raise ValueError("malformed payload in token")
+		raise CredentialError("Malformed payload in token")

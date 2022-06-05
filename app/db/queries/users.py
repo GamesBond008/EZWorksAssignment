@@ -39,3 +39,14 @@ async def verify_user(user: UserInLogin, *, session: sessionmaker):
 		raise EntityNotFound('The user associated with given email or password is not found.')
 	
 	return curr_user
+
+@create_session
+async def get_user(user: User, *, session: sessionmaker):
+	statement = select(User).where(User.email == user.email)
+	resp_user = await session.execute(statement)
+	resp_user = resp_user.scalars().first()
+
+	if curr_user is None or not verify_password(user.password, curr_user.password):
+		raise EntityNotFound('The user associated with given email or password is not found.')
+	
+	return resp_user
