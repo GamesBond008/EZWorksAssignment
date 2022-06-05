@@ -15,10 +15,10 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv('accessTokenExpiration'))
 SECRET_KEY = os.getenv('secretKey')
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def verify_password(plain_password, hashed_password):
+def verify_password(plain_password: str, hashed_password: str):
 	return pwd_context.verify(plain_password, hashed_password)
 
-def get_password_hash(password):
+def get_password_hash(password: str):
     return pwd_context.hash(password)
 
 
@@ -28,7 +28,6 @@ def create_jwt_token(jwt_content: Dict[str, str], expires_delta: timedelta) -> s
 	to_encode.update({
 		'exp': expire, 'sub' : JWT_SUBJECT
 	})
-	print(to_encode)
 	return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 

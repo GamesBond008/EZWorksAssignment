@@ -3,6 +3,7 @@ from app.db.session import create_session
 from sqlalchemy.orm import sessionmaker
 from app.models.schemas.users import User
 from .users import get_user
+from sqlalchemy.future import select
 
 @create_session
 async def create_file(user: User, file_path: str, *, session: sessionmaker):
@@ -14,8 +15,8 @@ async def create_file(user: User, file_path: str, *, session: sessionmaker):
 	await session.flush()
 
 @create_session
-async def list_files(*, session: sessionmaker):
+async def list_uploaded_files(*, session: sessionmaker):
 
-	statement = Select(File)
+	statement = select(File)
 	files = await session.execute(statement)
-	return files.scalars.all()
+	return files.scalars().fetchall()

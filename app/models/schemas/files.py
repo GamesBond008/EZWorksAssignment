@@ -2,10 +2,15 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List
 
-class File(BaseModel):
-	createdat: datetime
+
+class UploadedFile(BaseModel):
+	created_at: datetime
 	filename: str
 
 
-class ListFiles(BaseModel):
-	files: List[File]
+class ListUploadedFiles(BaseModel):
+	files: List[UploadedFile]
+
+
+class DownloadFile(BaseModel):
+	download_link: str
