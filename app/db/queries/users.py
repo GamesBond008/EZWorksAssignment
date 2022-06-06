@@ -46,3 +46,9 @@ async def get_user(user: User, *, session: sessionmaker):
 	resp_user = await session.execute(statement)
 	resp_user = resp_user.scalars().first()
 	return resp_user
+
+@create_session
+async def set_user(user: User, *, session: sessionmaker):
+	session.add(user)
+	await session.flush()
+	return 
